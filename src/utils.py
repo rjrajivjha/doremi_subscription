@@ -27,7 +27,7 @@ def add_top_up(cost, month, subscriptions):
 # construct Subscription
 def construct_subscription(cls, sub_date, category, plan):
     sub = cls(sub_date, category, plan)
-    sub.Fee()
+    sub.Amount()
     sub.renewal_reminder()
 
     return sub
@@ -49,7 +49,7 @@ def print_renewal_details(subscriptions, top_ups, cost=0):
     if subscriptions:
         for key, subscription in subscriptions.items():
             print(subscription.__repr__())
-            cost += subscription.fee
+            cost += subscription.amount
         cost += top_ups
         print(f'{RENEWAL_AMOUNT} {cost}')
     else:

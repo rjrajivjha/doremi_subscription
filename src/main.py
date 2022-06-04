@@ -10,14 +10,14 @@ class Subscription:
         self.subscription_date = subscription_date
         self.category = category
         self.plan = plan
-        self.Fee()
+        self.Amount()
         self.renewal_reminder()
 
     @staticmethod
     def get_reminder_date(date, month=1, day=10):
         return date + relativedelta(months=month) - relativedelta(days=day)
 
-    def Fee(self):
+    def Amount(self):
         raise NotImplementedError
 
     def renewal_reminder(self):
@@ -35,13 +35,13 @@ class Subscription:
 class Music(Subscription):
     """Class for Music"""
 
-    def Fee(self):
+    def Amount(self):
         if self.plan == FREE:
-            self.fee = 0
+            self.amount = 0
         if self.plan == PERSONAL:
-            self.fee = 100
+            self.amount = 100
         if self.plan == PREMIUM:
-            self.fee = 250
+            self.amount = 250
 
     def __str__(self):
         return "Music"
@@ -50,13 +50,13 @@ class Music(Subscription):
 class Video(Subscription):
     """Class for Video"""
 
-    def Fee(self):
+    def Amount(self):
         if self.plan == FREE:
-            self.fee = 0
+            self.amount = 0
         if self.plan == PERSONAL:
-            self.fee = 200
+            self.amount = 200
         if self.plan == PREMIUM:
-            self.fee = 500
+            self.amount = 500
 
     def __str__(self):
         return "Video"
@@ -65,13 +65,13 @@ class Video(Subscription):
 class Podcast(Subscription):
     """Class for Podcasts"""
 
-    def Fee(self):
+    def Amount(self):
         if self.plan == FREE:
-            self.fee = 0
+            self.amount = 0
         if self.plan == PERSONAL:
-            self.fee = 100
+            self.amount = 100
         if self.plan == PREMIUM:
-            self.fee = 300
+            self.amount = 300
 
     def __str__(self):
         return "Podcast"
