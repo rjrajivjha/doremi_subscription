@@ -25,7 +25,7 @@ class Subscription:
             self.reminder_date = get_reminder_date(self.subscription_date, 3, 10)
 
     def __repr__(self):
-        return f"{RENEWAL_REMINDER} {self.category} {self.reminder_date}"
+        return f"{RENEWAL_REMINDER} {self.category} {self.reminder_date.strftime('%d-%m-%Y')}"
 
 
 class Music(Subscription):

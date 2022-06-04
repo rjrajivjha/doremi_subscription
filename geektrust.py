@@ -2,7 +2,7 @@ from sys import argv
 
 from src.constants import (START_SUBSCRIPTION, ADD_SUBSCRIPTION, ADD_TOP_UP,
                            PRINT_RENEWAL_DETAILS, SUBSCRIPTIONS_NOT_FOUND,
-                           RENEWAL_AMOUNT)
+                           RENEWAL_AMOUNT, INVALID_DATE, ADD_SUBSCRIPTIONS_FAILED, ADD_TOP_UP_FAILED)
 from src.main import (construct_subscription, cls_dict)
 from src.utils import top_ups_dict, validate_date, add_top_up
 
@@ -24,8 +24,14 @@ def main():
 
             if command == START_SUBSCRIPTION:
                 subscription_start_date = validate_date(args[0])
+                continue
 
-            if command == ADD_SUBSCRIPTION and subscription_start_date:
+            if subscription_start_date is None and command!=PRINT_RENEWAL_DETAILS:
+                print(f'{ADD_SUBSCRIPTIONS_FAILED} {INVALID_DATE}') if command == ADD_SUBSCRIPTION else print(
+                    f'{ADD_TOP_UP_FAILED} {INVALID_DATE}')
+                continue
+
+            if command == ADD_SUBSCRIPTION:
                 category = args[0]
                 plan = args[1]
                 if category not in subscriptions:

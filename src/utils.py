@@ -15,7 +15,7 @@ def validate_date(date_text):
         date = datetime.datetime.strptime(date_text, '%d-%m-%Y')
         return date.date()
     except ValueError:
-        raise ValueError(INVALID_DATE)
+        print(INVALID_DATE)
 
 
 def add_top_up(cost, month, subscriptions):
