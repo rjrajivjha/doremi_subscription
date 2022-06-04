@@ -8,6 +8,18 @@ from src.main import (construct_subscription, cls_dict)
 from src.utils import top_ups_dict, validate_date, add_top_up
 
 
+def add_sub(category, plan, subscriptions, subscription_start_date):
+    category = category
+    plan = plan
+    if category not in subscriptions:
+        subscriptions[category] = construct_subscription(
+            cls_dict[category],
+            subscription_start_date,
+            category, plan)
+    else:
+        print("ADD_SUBSCRIPTION_FAILED DUPLICATE_CATEGORY ")
+
+
 def main():
     if len(argv) != 2:
         raise Exception("File path not entered")
@@ -27,21 +39,15 @@ def main():
                 subscription_start_date = validate_date(args[0])
                 continue
 
-            if subscription_start_date is None and command!=PRINT_RENEWAL_DETAILS:
-                print(f'{ADD_SUBSCRIPTION_FAILED} {INVALID_DATE}') if command == ADD_SUBSCRIPTION else print(
-                    f'{ADD_TOP_UP_FAILED} {INVALID_DATE}')
+            if subscription_start_date is None and command != PRINT_RENEWAL_DETAILS:
+                if command == ADD_SUBSCRIPTION:
+                    print(f'{ADD_SUBSCRIPTION_FAILED} {INVALID_DATE}')
+                else:
+                    print(f'{ADD_TOP_UP_FAILED} {INVALID_DATE}')
                 continue
 
             if command == ADD_SUBSCRIPTION:
-                category = args[0]
-                plan = args[1]
-                if category not in subscriptions:
-                    subscriptions[category] = construct_subscription(
-                        cls_dict[category],
-                        subscription_start_date,
-                        category, plan)
-                else:
-                    print("ADD_SUBSCRIPTION_FAILED DUPLICATE_CATEGORY ")
+                add_sub(args[0], args[1], subscriptions, subscription_start_date)
 
             if command == ADD_TOP_UP and subscription_start_date:
                 if top_ups:
@@ -55,7 +61,7 @@ def main():
                         print(subscription.__repr__())
                         cost += subscription.fee
                     cost += top_ups
-                    print(f'{RENEWAL_AMOUNT} {cost}') if cost != 0 else print(SUBSCRIPTIONS_NOT_FOUND)
+                    print(f'{RENEWAL_AMOUNT} {cost}')
                 else:
                     print(f'{SUBSCRIPTIONS_NOT_FOUND}')
 
