@@ -1,7 +1,7 @@
+from dateutil.relativedelta import relativedelta
+
 from .constants import (MUSIC, PODCAST, VIDEO,
                         RENEWAL_REMINDER, FREE, PERSONAL, PREMIUM, )
-
-from .utils import get_reminder_date
 
 
 class Subscription:
@@ -13,16 +13,20 @@ class Subscription:
         self.Fee()
         self.renewal_reminder()
 
+    @staticmethod
+    def get_reminder_date(date, month=1, day=10):
+        return date + relativedelta(months=month) - relativedelta(days=day)
+
     def Fee(self):
         raise NotImplementedError
 
     def renewal_reminder(self):
         if self.plan == FREE:
-            self.reminder_date = get_reminder_date(self.subscription_date, 1, 10)
+            self.reminder_date = self.get_reminder_date(self.subscription_date, 1, 10)
         if self.plan == PERSONAL:
-            self.reminder_date = get_reminder_date(self.subscription_date, 1, 10)
+            self.reminder_date = self.get_reminder_date(self.subscription_date, 1, 10)
         if self.plan == PREMIUM:
-            self.reminder_date = get_reminder_date(self.subscription_date, 3, 10)
+            self.reminder_date = self.get_reminder_date(self.subscription_date, 3, 10)
 
     def __repr__(self):
         return f"{RENEWAL_REMINDER} {self.category} {self.reminder_date.strftime('%d-%m-%Y')}"
@@ -71,15 +75,6 @@ class Podcast(Subscription):
 
     def __str__(self):
         return "Podcast"
-
-
-# construct Subscription
-def construct_subscription(cls, sub_date, category, plan):
-    sub = cls(sub_date, category, plan)
-    sub.Fee()
-    sub.renewal_reminder()
-
-    return sub
 
 
 cls_dict = {
