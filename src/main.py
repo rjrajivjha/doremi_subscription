@@ -18,9 +18,6 @@ class Subscription:
     def get_reminder_date(date, month=1, day=offset_days):
         return date + relativedelta(months=month) - relativedelta(days=day)
 
-    def Amount(self):
-        raise NotImplementedError
-
     def renewal_reminder(self):
         if self.plan == FREE:
             self.reminder_date = self.get_reminder_date(self.subscription_date, self.month, self.offset_days)
@@ -29,6 +26,10 @@ class Subscription:
         if self.plan == PREMIUM:
             self.reminder_date = self.get_reminder_date(self.subscription_date, self.month, self.offset_days)
 
+    def Amount(self):
+        self.amount = self.plans_dict[self.plan]['amount']
+        self.month = self.plans_dict[self.plan]['month']
+
     def __repr__(self):
         return f"{RENEWAL_REMINDER} {self.category} {self.reminder_date.strftime('%d-%m-%Y')}"
 
@@ -36,16 +37,20 @@ class Subscription:
 class Music(Subscription):
     """Class for Music"""
 
-    def Amount(self):
-        if self.plan == FREE:
-            self.amount = 0
-            self.month = 1
-        if self.plan == PERSONAL:
-            self.amount = 100
-            self.month = 1
-        if self.plan == PREMIUM:
-            self.amount = 250
-            self.month = 3
+    plans_dict = {
+        FREE: {
+            'amount': 0,
+            'month': 1
+        },
+        PERSONAL: {
+            'amount': 100,
+            'month': 1
+        },
+        PREMIUM: {
+            'amount': 250,
+            'month': 3
+        }
+    }
 
     def __str__(self):
         return "Music"
@@ -54,16 +59,20 @@ class Music(Subscription):
 class Video(Subscription):
     """Class for Video"""
 
-    def Amount(self):
-        if self.plan == FREE:
-            self.amount = 0
-            self.month = 1
-        if self.plan == PERSONAL:
-            self.amount = 200
-            self.month = 1
-        if self.plan == PREMIUM:
-            self.amount = 500
-            self.month = 3
+    plans_dict = {
+        FREE: {
+            'amount': 0,
+            'month': 1
+        },
+        PERSONAL: {
+            'amount': 200,
+            'month': 1
+        },
+        PREMIUM: {
+            'amount': 500,
+            'month': 3
+        }
+    }
 
     def __str__(self):
         return "Video"
@@ -71,17 +80,20 @@ class Video(Subscription):
 
 class Podcast(Subscription):
     """Class for Podcasts"""
-
-    def Amount(self):
-        if self.plan == FREE:
-            self.amount = 0
-            self.month = 1
-        if self.plan == PERSONAL:
-            self.amount = 100
-            self.month = 1
-        if self.plan == PREMIUM:
-            self.amount = 300
-            self.month = 3
+    plans_dict = {
+        FREE: {
+            'amount': 0,
+            'month': 1
+        },
+        PERSONAL: {
+            'amount': 100,
+            'month': 1
+        },
+        PREMIUM: {
+            'amount': 300,
+            'month': 3
+        }
+    }
 
     def __str__(self):
         return "Podcast"
