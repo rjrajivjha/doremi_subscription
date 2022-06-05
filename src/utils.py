@@ -1,10 +1,13 @@
 import datetime
-from .constants import FOUR_DEVICE, TEN_DEVICE, INVALID_DATE, RENEWAL_AMOUNT, SUBSCRIPTIONS_NOT_FOUND
+from .constants import (FOUR_DEVICE, TEN_DEVICE, INVALID_DATE,
+                        RENEWAL_AMOUNT, SUBSCRIPTIONS_NOT_FOUND,
+                        CHARGE_FOUR_DEVICE, CHARGE_TEN_DEVICE,
+                        MIN_SUB_REQD_FOR_TOP_UP)
 from .main import cls_dict
 
 top_ups_dict = {
-    FOUR_DEVICE: 50,
-    TEN_DEVICE: 100,
+    FOUR_DEVICE: CHARGE_FOUR_DEVICE,
+    TEN_DEVICE: CHARGE_TEN_DEVICE,
 }
 
 
@@ -17,11 +20,10 @@ def validate_date(date_text):
 
 
 def add_top_up(cost, month, subscriptions):
-    if len(subscriptions) >= 1:
+    if len(subscriptions) >= MIN_SUB_REQD_FOR_TOP_UP:
         return cost * month
     else:
         print("ADD_TOPUP_FAILED SUBSCRIPTIONS_NOT_FOUND")
-        return 0
 
 
 # construct Subscription
