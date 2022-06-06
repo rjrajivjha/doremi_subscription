@@ -19,12 +19,7 @@ class Subscription:
         return date + relativedelta(months=month) - relativedelta(days=day)
 
     def renewal_reminder(self):
-        if self.plan == FREE:
-            self.reminder_date = self.get_reminder_date(self.subscription_date, self.month, self.offset_days)
-        if self.plan == PERSONAL:
-            self.reminder_date = self.get_reminder_date(self.subscription_date, self.month, self.offset_days)
-        if self.plan == PREMIUM:
-            self.reminder_date = self.get_reminder_date(self.subscription_date, self.month, self.offset_days)
+        self.reminder_date = self.get_reminder_date(self.subscription_date, self.month, self.offset_days)
 
     def Amount(self):
         self.amount = self.plans_dict[self.plan]['amount']
@@ -36,7 +31,6 @@ class Subscription:
 
 class Music(Subscription):
     """Class for Music"""
-
     plans_dict = {
         FREE: {
             'amount': 0,
@@ -80,20 +74,21 @@ class Video(Subscription):
 
 class Podcast(Subscription):
     """Class for Podcasts"""
+
     plans_dict = {
-        FREE: {
-            'amount': 0,
-            'month': 1
-        },
-        PERSONAL: {
-            'amount': 100,
-            'month': 1
-        },
-        PREMIUM: {
-            'amount': 300,
-            'month': 3
+            FREE: {
+                'amount': 0,
+                'month': 1
+            },
+            PERSONAL: {
+                'amount': 100,
+                'month': 1
+            },
+            PREMIUM: {
+                'amount': 300,
+                'month': 3
+            }
         }
-    }
 
     def __str__(self):
         return "Podcast"
