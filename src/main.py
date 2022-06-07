@@ -11,8 +11,6 @@ class Subscription:
         self.subscription_date = subscription_date
         self.category = category
         self.plan = plan
-        self.Amount()
-        self.renewal_reminder()
 
     @staticmethod
     def get_reminder_date(date, month=1, day=offset_days):
@@ -31,20 +29,23 @@ class Subscription:
 
 class Music(Subscription):
     """Class for Music"""
-    plans_dict = {
-        FREE: {
-            'amount': 0,
-            'month': 1
-        },
-        PERSONAL: {
-            'amount': 100,
-            'month': 1
-        },
-        PREMIUM: {
-            'amount': 250,
-            'month': 3
+
+    def __init__(self, subscription_date, category, plan):
+        super().__init__(subscription_date, category, plan)
+        self.plans_dict = {
+            FREE: {
+                'amount': 0,
+                'month': 1
+            },
+            PERSONAL: {
+                'amount': 100,
+                'month': 1
+            },
+            PREMIUM: {
+                'amount': 250,
+                'month': 3
+            }
         }
-    }
 
     def __str__(self):
         return "Music"
@@ -53,20 +54,22 @@ class Music(Subscription):
 class Video(Subscription):
     """Class for Video"""
 
-    plans_dict = {
-        FREE: {
-            'amount': 0,
-            'month': 1
-        },
-        PERSONAL: {
-            'amount': 200,
-            'month': 1
-        },
-        PREMIUM: {
-            'amount': 500,
-            'month': 3
+    def __init__(self, subscription_date, category, plan):
+        super().__init__(subscription_date, category, plan)
+        self.plans_dict = {
+            FREE: {
+                'amount': 0,
+                'month': 1
+            },
+            PERSONAL: {
+                'amount': 200,
+                'month': 1
+            },
+            PREMIUM: {
+                'amount': 500,
+                'month': 3
+            }
         }
-    }
 
     def __str__(self):
         return "Video"
@@ -75,7 +78,9 @@ class Video(Subscription):
 class Podcast(Subscription):
     """Class for Podcasts"""
 
-    plans_dict = {
+    def __init__(self, subscription_date, category, plan):
+        super().__init__(subscription_date, category, plan)
+        self.plans_dict = {
             FREE: {
                 'amount': 0,
                 'month': 1

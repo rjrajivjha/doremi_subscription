@@ -6,6 +6,26 @@ from src.constants import (START_SUBSCRIPTION, ADD_SUBSCRIPTION, ADD_TOP_UP,
 from src.utils import top_ups_dict, validate_date, add_top_up, print_renewal_details, add_sub
 
 
+def process_add_subscription(category, plan, subscriptions, subscription_start_date):
+    if not subscription_start_date:
+        print(f'{ADD_SUBSCRIPTION_FAILED} {INVALID_DATE}')
+        return
+    add_sub(category, plan, subscriptions, subscription_start_date)
+
+
+def process_add_top_up(name, month, subscriptions, top_ups, subscription_start_date):
+    if subscription_start_date is None:
+        print(f'{ADD_TOP_UP_FAILED} {INVALID_DATE}')
+        return 0
+
+    if top_ups:
+        print("ADD_TOPUP_FAILED DUPLICATE_TOPUP")
+        return 0
+
+    top_ups += add_top_up(top_ups_dict[name], int(month), subscriptions)
+    return top_ups
+
+
 def process_Lines(Lines):
     subscriptions = {}
     top_ups = 0
@@ -17,36 +37,31 @@ def process_Lines(Lines):
             subscription_start_date = validate_date(args[0])
             continue
 
-        elif subscription_start_date is None and command == ADD_SUBSCRIPTION:
-            print(f'{ADD_SUBSCRIPTION_FAILED} {INVALID_DATE}')
+        if command == ADD_SUBSCRIPTION:
+            process_add_subscription(args[0], args[1], subscriptions, subscription_start_date)
+            continue
 
-        elif subscription_start_date is None and command == ADD_TOP_UP:
-            print(f'{ADD_TOP_UP_FAILED} {INVALID_DATE}')
+        if command == ADD_TOP_UP:
+            top_ups += process_add_top_up(args[0], args[1], subscriptions, top_ups, subscription_start_date)
+            continue
 
-        elif command == ADD_SUBSCRIPTION:
-            category = args[0]
-            plan = args[1]
-            add_sub(category, plan, subscriptions, subscription_start_date)
-
-        elif command == ADD_TOP_UP and subscription_start_date and top_ups:
-            print("ADD_TOPUP_FAILED DUPLICATE_TOPUP")
-
-        elif command == ADD_TOP_UP and subscription_start_date and not top_ups:
-            top_ups += add_top_up(top_ups_dict[args[0]], int(args[1]), subscriptions)
-
-        elif command == PRINT_RENEWAL_DETAILS:
+        if command == PRINT_RENEWAL_DETAILS:
             print_renewal_details(subscriptions, top_ups)
+            continue
+
+
+def open_file(file_path='sample_input/input2.txt'):
+    f = open(file_path, 'r')
+    Lines = f.readlines()
+    process_Lines(Lines)
 
 
 def main():
-    # if len(argv) != ARGUMENTS_LENGTH:
-    #     raise Exception("File path not entered")
+    if len(argv) != ARGUMENTS_LENGTH:
+        raise Exception("File path not entered")
     try:
-        # file_path = argv[1]
-        file_path = 'sample_input/input8.txt'
-        f = open(file_path, 'r')
-        Lines = f.readlines()
-        process_Lines(Lines)
+        file_path = argv[1]
+        open_file(file_path)
     except FileNotFoundError:
         print("File Not Found. please correct file path.")
     except Exception as e:

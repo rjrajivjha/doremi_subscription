@@ -36,8 +36,6 @@ def construct_subscription(cls, sub_date, category, plan):
 
 
 def add_sub(category, plan, subscriptions, subscription_start_date):
-    category = category
-    plan = plan
     if category not in subscriptions:
         subscriptions[category] = construct_subscription(
             cls_dict[category],
