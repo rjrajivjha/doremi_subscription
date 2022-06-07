@@ -5,19 +5,19 @@ from .constants import (MUSIC, PODCAST, VIDEO,
 
 
 class Subscription:
-    offset_days = 10
 
     def __init__(self, subscription_date, category, plan):
+        self.offset_days = 10
         self.subscription_date = subscription_date
         self.category = category
         self.plan = plan
-
-    @staticmethod
-    def get_reminder_date(date, month=1, day=offset_days):
-        return date + relativedelta(months=month) - relativedelta(days=day)
+        self.reminder_date = None
+        self.amount = None
+        self.month = None
 
     def renewal_reminder(self):
-        self.reminder_date = self.get_reminder_date(self.subscription_date, self.month, self.offset_days)
+        self.reminder_date = self.subscription_date + relativedelta(
+            months=self.month) - relativedelta(days=self.offset_days)
 
     def Amount(self):
         self.amount = self.plans_dict[self.plan]['amount']
